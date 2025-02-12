@@ -27,6 +27,12 @@ public class UserController {
     private ResponseEntity<User> read (@PathVariable String username) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.findByUsername(username));
     }
+
+    @GetMapping("/read")
+    private ResponseEntity<User> read2 (@RequestParam String username) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.findByUsername(username));
+    }
+
     // create , update
 
     @PostMapping("/create")

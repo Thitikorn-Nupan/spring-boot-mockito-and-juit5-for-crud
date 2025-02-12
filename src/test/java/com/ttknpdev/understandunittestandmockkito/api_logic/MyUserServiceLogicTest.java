@@ -5,6 +5,7 @@ import com.ttknpdev.understandunittestandmockkito.repository.UserRepository;
 import com.ttknpdev.understandunittestandmockkito.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 
@@ -36,10 +38,11 @@ import static org.mockito.Mockito.*;
 @Slf4j
 public class MyUserServiceLogicTest {
     /*
+
     The @Mock annotation creates a mock implementation for the class it is annotated with.
     The @InjectMocks also creates the mock implementation of annotated type and injects the dependent mocks into it.
     mock (v. จำลอง ล้อเลียน)
-    */
+    // ***** First way
     @Mock
     private UserRepository userRepository;
     // @Mock
@@ -50,6 +53,18 @@ public class MyUserServiceLogicTest {
     public void initUseCase() {
         userService = new UserService(userRepository);
         // MockitoAnnotations.initMocks(this);
+    }
+    ***
+    */
+
+    // ***** Second way **** Not using Correct Method for Creating Mock Objects **
+    private UserRepository userRepository;
+    private UserService userService;
+
+    @BeforeEach
+    public void setUp() {
+        userRepository = Mockito.mock(UserRepository.class);
+        userService = new UserService(userRepository);
     }
 
     /**
@@ -62,13 +77,26 @@ public class MyUserServiceLogicTest {
     @Test
     public void create() {
 
+        /**
+         Mockito creates mock objects by default with a behavior of “do nothing”.
+         This means that if a method is called on a mock object and no behavior has been specified,
+         the method will simply return null or the default value for its return type.
+         */
         // This will make userRepository.save(any(User.class)) return the same user object that is passed into the method.*/
         when( userRepository.save (any(User.class)) ).then( returnsFirstArg() );
 
+        // actor
         User savedUser = userService.create(getUser());
 
+        /**
+         Mockito provides several(adj. หลาย) methods for verifying that a mock object was called with specific parameters,
+         such as Mockito.verify(),
+         Mockito.verifyZeroInteractions(),
+         Mockito.verifyNoMoreInteractions().
+        */
+        // ** times(1) argument to specify that the method should be called exactly once,  if it was called multiple times, the test would fail
         verify(userRepository,times(1)).save(getUser());
-
+        verifyNoMoreInteractions(userRepository);
         assertThat("adam").isEqualTo(savedUser.getUsername());
 
     }
@@ -112,6 +140,27 @@ public class MyUserServiceLogicTest {
 
         verify(userRepository,times(1)).findById(username);
 
+    }
+
+
+    // ** Not Handling Exceptions
+    @Test
+    public void readFailed() {
+        String username = "alex";
+
+        when(userRepository.findById(username)).thenReturn(Optional.empty());
+
+        /**
+         We use the assertThrows() method to verify that the correct exception is thrown,
+         and we also use the getMessage() method of the exception to verify that the correct message is returned.
+        */
+        // act and assert
+        Exception exception = assertThrows(Exception.class, () -> {
+            userService.findByUsername(username);
+        });
+
+        // the error will be same method you provide!
+        assertThat(exception.getMessage()).isEqualTo("Not found : " + username);
     }
 
     /**
