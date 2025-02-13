@@ -6,6 +6,7 @@ import com.ttknpdev.understandunittestandmockkito.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,6 +48,11 @@ public class UserController {
 
     @DeleteMapping("/delete")
     private ResponseEntity<Boolean> delete (@RequestParam String username) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.delete(username));
+        return ResponseEntity
+                .status(HttpStatus.ACCEPTED)
+                // ** after .status(...) you can set up http headers !!
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Message", "User deleted")
+                .body(service.delete(username));
     }
 }
