@@ -51,6 +51,7 @@ public class MyUserControllerTest {
         /// ** call the provider **
         // when -  action or the behaviour(n.พฤติกรรม) that we are going test
         RequestBuilder request = MockMvcRequestBuilders.get("/api/reads");
+        // ** ResultActions class to handle the response of the REST API.
         ResultActions response = mockMvc.perform(request);
 
         ///  ** result follow your api response
@@ -60,7 +61,6 @@ public class MyUserControllerTest {
                 // seem <arrayListYouGot>().size() == is(<sizeYouProvide>)
                 )
                 .andExpect(status().isAccepted());
-
     }
 
     // JUnit test for read
