@@ -38,7 +38,6 @@ import static org.mockito.Mockito.*;
 @Slf4j
 public class MyUserServiceLogicTest {
     /*
-
     The @Mock annotation creates a mock implementation for the class it is annotated with.
     The @InjectMocks also creates the mock implementation of annotated type and injects the dependent mocks into it.
     mock (v. จำลอง ล้อเลียน)
@@ -100,6 +99,7 @@ public class MyUserServiceLogicTest {
         assertThat("adam").isEqualTo(savedUser.getUsername());
 
     }
+
     @Test
     public void reads() {
         // keep concept mocking
@@ -141,7 +141,6 @@ public class MyUserServiceLogicTest {
         verify(userRepository,times(1)).findById(username);
 
     }
-
 
     // ** Not Handling Exceptions
     @Test

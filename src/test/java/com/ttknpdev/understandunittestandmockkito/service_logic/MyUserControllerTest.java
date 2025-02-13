@@ -24,7 +24,7 @@ import static org.mockito.BDDMockito.*;
 
 
 // *** JUnit5 test cases for CRUD REST APIs.
-// ** use the @WebMvcTest annotation to load only UserController class. (can multiple rest controller)
+// *** use the @WebMvcTest annotation to load only UserController class. (can multiple rest controller)
 @WebMvcTest(controllers = UserController.class)
 public class MyUserControllerTest {
 
@@ -62,6 +62,7 @@ public class MyUserControllerTest {
                 .andExpect(status().isAccepted());
 
     }
+
     // JUnit test for read
     @Test
     public void givenUser_whenCallApiReadAndPassPathParam_thenReturnUser() throws Exception {
@@ -177,7 +178,6 @@ public class MyUserControllerTest {
                 .andExpect( jsonPath("$.mail", is(user.getMail()) ) );
     }
 
-
     // JUnit test for delete
     @Test
     public void delete() throws Exception {
@@ -216,7 +216,6 @@ public class MyUserControllerTest {
 
     }
 
-
     private User getUser() {
         return new User("adam","adam@abc.abc");
     }
@@ -234,6 +233,5 @@ public class MyUserControllerTest {
                 new User("kavin", "kavin@abc.abc")
         );
     }
-
 
 }
