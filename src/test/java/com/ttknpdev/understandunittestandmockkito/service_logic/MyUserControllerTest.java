@@ -1,6 +1,7 @@
 package com.ttknpdev.understandunittestandmockkito.service_logic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ttknpdev.understandunittestandmockkito.config.SecurityConfig;
 import com.ttknpdev.understandunittestandmockkito.control.UserController;
 import com.ttknpdev.understandunittestandmockkito.entity.User;
 import com.ttknpdev.understandunittestandmockkito.service.UserService;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.*;
