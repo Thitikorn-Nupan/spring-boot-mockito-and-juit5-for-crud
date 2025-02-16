@@ -112,8 +112,10 @@ public class SecurityConfig {
                     authz.requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/v2/read")).hasAuthority("read");
                     // ***
                     authz.requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/v2/create")).hasAuthority("write");
+                    authz.requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.PUT, "/api/v2/update")).hasAnyAuthority("write","update");
                     authz.requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.DELETE, "/api/v2/delete")).hasAnyAuthority("write","delete");
                 })
+                .formLogin().disable() // disable form login *** optional
                 .httpBasic(withDefaults()) // enable http basic *** dialog login
                 // *** importance!
                 // *** should one, enable/disable csrf protection!
@@ -126,6 +128,7 @@ public class SecurityConfig {
                     csrf.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/v2/read/{username}")); // so now i can pass value as /api/v2/read/adam
                     csrf.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/api/v2/read")); // so now i can pass value as /api/v2/read?username=adam
                     csrf.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/v2/create"));
+                    csrf.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.PUT, "/api/v2/update"));
                     csrf.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.DELETE, "/api/v2/delete"));
                 })
                 .headers().frameOptions().sameOrigin(); // for enable loading h2 ui templates
